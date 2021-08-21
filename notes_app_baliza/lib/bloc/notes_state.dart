@@ -10,6 +10,11 @@ class LoadingState extends NotesState {}
 
 class AddState extends NotesState {}
 
+class UpdateState extends NotesState {}
+
+class DeleteState extends NotesState {}
+
+
 
 class GetState extends NotesState {
 

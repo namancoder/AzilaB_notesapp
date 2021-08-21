@@ -16,12 +16,11 @@ void main() async {
 
   var UserUID = prefs.get('key');
 
-  runApp(UserUID == null
-      ? MyApp()
-      : BlocProvider<NotesBloc>(
-          create: (context) => NotesBloc(NotesRepository()),
-          child: NotesList(),
-        ));
+  runApp(BlocProvider<NotesBloc>(
+      create: (context) => NotesBloc(NotesRepository()),
+      child: MaterialApp(
+        home: UserUID == null ? MyApp() : NotesList(),
+      )));
 }
 
 class MyApp extends StatelessWidget {
@@ -73,9 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// function to implement the google signin
-
-// creating firebase instance
+// function to implement the google signin creating firebase instance
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
