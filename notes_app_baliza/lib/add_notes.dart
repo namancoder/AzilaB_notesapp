@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:notes_app_baliza/bloc/notes_bloc.dart';
+import 'package:notes_app_baliza/data/notes_model.dart';
 import 'package:notes_app_baliza/notes_list.dart';
 import 'package:intl/intl.dart';
+import 'package:line_icons/line_icons.dart';
 
 class AddNote extends StatefulWidget {
   final bool isAdd;
+  final NotesModel note;
 
-  AddNote({required this.isAdd});
+  AddNote({
+    required this.isAdd,
+    required this.note,
+  });
 
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -15,10 +22,38 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   var title = TextEditingController();
+
   var description = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (!widget.isAdd) {
+      title.text = widget.note.title.toString();
+      description.text = widget.note.description.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("NOTE ID");
+    print(widget.note.id);
     return Scaffold(
+      bottomNavigationBar: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Icon(LineIcons.pen),
+            Icon(
+              Icons.star,
+              color: Colors.yellow[700],
+            ),
+            Icon(LineIcons.share),
+            Icon(Icons.more_vert),
+          ],
+        ),
+      ),
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: GestureDetector(
@@ -46,7 +81,7 @@ class _AddNoteState extends State<AddNote> {
       ),
       body: BlocListener<NotesBloc, NotesState>(
         listener: (context, state) {
-          if (state is AddState) {
+          if (state is AddState || state is UpdateState) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => NotesList()));
           }
@@ -107,7 +142,7 @@ class _AddNoteState extends State<AddNote> {
                       border: InputBorder.none,
                       focusColor: Colors.purple[900],
                       fillColor: Colors.purple[900],
-                      hintText: "Description",
+                      hintText: widget.isAdd ? "Description" : null,
                       hintStyle: TextStyle(
                           fontSize: 25.0,
                           color: Colors.purple[900],
@@ -135,8 +170,14 @@ class _AddNoteState extends State<AddNote> {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.purple)),
                   onPressed: () {
-                    BlocProvider.of<NotesBloc>(context).add(AddEvent(
-                        title: title.text, description: description.text));
+                    if (widget.isAdd)
+                      BlocProvider.of<NotesBloc>(context).add(AddEvent(
+                          title: title.text, description: description.text));
+                    else if (!widget.isAdd)
+                      BlocProvider.of<NotesBloc>(context).add(UpdateEvent(
+                          title: title.text,
+                          description: description.text,
+                          id: widget.note.id));
                   },
                   child: Text(widget.isAdd == true ? "Add" : "Update"),
                 )),

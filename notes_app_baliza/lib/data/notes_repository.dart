@@ -7,14 +7,6 @@ import 'package:flutter/material.dart';
 import 'notes_model.dart';
 
 class NotesRepository {
-  //FirebaseFirestore.instance
-
-  // var db = FirebaseFirestore.instance
-  //     .collection("users")
-  //     .doc("${uidUser}")
-  //     .collection("notes");
-  //var settings = new FirebaseFirestoreSettings.;
-
   addEmp(NotesModel note) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -57,7 +49,6 @@ class NotesRepository {
         .delete() // <-- Delete
         .then((_) => print('Deleted'))
         .catchError((error) => print('Delete failed: $error'));
-  
   }
 
   updateEmp(NotesModel note) async {
@@ -67,12 +58,21 @@ class NotesRepository {
         .collection("users")
         .doc("${prefs.get('key')}")
         .collection("notes")
-        .doc();
+        .doc(note.id);
+    print(note.id);
 
-    db.set(note.toMap()).then((value) {
+    Map<String, dynamic> data = <String, dynamic>{
+      "title": note.title,
+      "description": note.description,
+      "datetime": note.datetime,
+      "id": note.id,
+    };
+    db.update(data).then((value) {
       print("Success");
     }).catchError((error) {
       print("Errror");
+      print(note.id);
+
       print(error);
     });
   }
@@ -96,7 +96,5 @@ class NotesRepository {
     await FirebaseAuth.instance.signOut();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('key');
-    // Navigator.push(
-    //     MaterialPageRoute(builder: (context) => MyHomePage(title: "Notes App Baliza")));
   }
 }

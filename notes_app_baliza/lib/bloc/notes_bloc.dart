@@ -29,9 +29,15 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           description: event.description,
           datetime: DateFormat("MMMM d, y, hh:mm  ").format(DateTime.now())));
       yield AddState();
-    }
-    else if (event is UpdateEvent){
-      
+    } else if (event is UpdateEvent) {
+      await repo.updateEmp(NotesModel(
+        title: event.title,
+        description: event.description,
+        id: event.id,
+        datetime: DateFormat("MMMM d, y, hh:mm  ").format(DateTime.now()),
+      ));
+
+      yield UpdateState();
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app_baliza/add_notes.dart';
 import 'package:notes_app_baliza/bloc/notes_bloc.dart';
+import 'package:notes_app_baliza/data/notes_model.dart';
 import 'package:notes_app_baliza/data/notes_repository.dart';
 import 'package:notes_app_baliza/main.dart';
 
@@ -24,24 +25,39 @@ class _NotesListState extends State<NotesList> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
+            toolbarHeight: MediaQuery.of(context).size.height * 0.15,
+            elevation: 0,
             actions: [
-              Container(
-                width: 50.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.purple[50],
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0),
-                      topLeft: Radius.circular(10.0),
-                      bottomLeft: Radius.circular(10.0)),
+              GestureDetector(
+                onTap: () {
+                  _signOut();
+                },
+                child: Container(
+                  width: 50.0,
+                  margin: EdgeInsets.only(
+                    top: 33.0,
+                    bottom: 33.0,
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.purple[50],
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0),
+                        topLeft: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0)),
+                  ),
+                  child: Icon(Icons.search, color: Colors.purple[900]),
                 ),
-                child: Icon(Icons.search, color: Colors.purple[900]),
               ),
             ],
             backgroundColor: Colors.white,
             leading: Container(
               height: 10.0,
+              margin: EdgeInsets.only(
+                top: 33.0,
+                bottom: 33.0,
+              ),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.purple[50],
@@ -88,7 +104,10 @@ class _NotesListState extends State<NotesList> {
                               onTap: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddNote(isAdd: false,))),
+                                      builder: (context) => AddNote(
+                                            isAdd: false,
+                                            note: state.userNotes![i],
+                                          ))),
                               // showDialog(
                               //   context: context,
                               //   builder: (context) => SimpleDialog(
@@ -115,7 +134,8 @@ class _NotesListState extends State<NotesList> {
                               title: Text(state.userNotes![i].title.toString()),
                               subtitle: Text(
                                 state.userNotes![i].description.toString(),
-                                maxLines: 1,
+                                maxLines: 2,
+                                style: TextStyle(fontSize: 12.0),
                               ),
                               trailing: Wrap(
                                 crossAxisAlignment: WrapCrossAlignment.end,
@@ -150,7 +170,12 @@ class _NotesListState extends State<NotesList> {
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.purple,
             onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddNote(isAdd: true,))),
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddNote(
+                          isAdd: true,
+                          note: NotesModel(),
+                        ))),
             child: Icon(
               Icons.add,
               size: 40.0,

@@ -14,7 +14,8 @@ class UpdateEvent extends NotesEvent {
   String? title;
   String? description;
   String? dateTime = DateTime.now().toString();
-  UpdateEvent({this.title, this.description, this.dateTime});
+  String? id;
+  UpdateEvent({this.title, this.description, this.dateTime,this.id});
 }
 
 class GetAllEvent extends NotesEvent {}
