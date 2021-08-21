@@ -5,7 +5,9 @@ import 'package:notes_app_baliza/notes_list.dart';
 import 'package:intl/intl.dart';
 
 class AddNote extends StatefulWidget {
-  const AddNote({Key? key}) : super(key: key);
+  final bool isAdd;
+
+  AddNote({required this.isAdd});
 
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -136,7 +138,7 @@ class _AddNoteState extends State<AddNote> {
                     BlocProvider.of<NotesBloc>(context).add(AddEvent(
                         title: title.text, description: description.text));
                   },
-                  child: Text("Add"),
+                  child: Text(widget.isAdd == true ? "Add" : "Update"),
                 )),
               ],
             ),

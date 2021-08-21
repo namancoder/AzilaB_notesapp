@@ -85,29 +85,33 @@ class _NotesListState extends State<NotesList> {
                         child: Column(
                           children: [
                             ListTile(
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => SimpleDialog(
-                                  children: [
-                                    Text(("     ")),
-                                    Text(
-                                      ("   Title"),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(("     -" +
-                                        state.userNotes![i].title.toString())),
-                                    Text(
-                                      ("   Description"),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(("     -" +
-                                        state.userNotes![i].description
-                                            .toString())),
-                                  ],
-                                ),
-                              ),
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddNote(isAdd: false,))),
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (context) => SimpleDialog(
+                              //     children: [
+                              //       Text(("     ")),
+                              //       Text(
+                              //         ("   Title"),
+                              //         style: TextStyle(
+                              //             fontWeight: FontWeight.bold),
+                              //       ),
+                              //       Text(("     -" +
+                              //           state.userNotes![i].title.toString())),
+                              //       Text(
+                              //         ("   Description"),
+                              //         style: TextStyle(
+                              //             fontWeight: FontWeight.bold),
+                              //       ),
+                              //       Text(("     -" +
+                              //           state.userNotes![i].description
+                              //               .toString())),
+                              //     ],
+                              //   ),
+                              // ),
                               title: Text(state.userNotes![i].title.toString()),
                               subtitle: Text(
                                 state.userNotes![i].description.toString(),
@@ -146,7 +150,7 @@ class _NotesListState extends State<NotesList> {
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.purple,
             onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddNote())),
+                context, MaterialPageRoute(builder: (context) => AddNote(isAdd: true,))),
             child: Icon(
               Icons.add,
               size: 40.0,

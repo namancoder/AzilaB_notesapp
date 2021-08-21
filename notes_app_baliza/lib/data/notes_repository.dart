@@ -57,10 +57,7 @@ class NotesRepository {
         .delete() // <-- Delete
         .then((_) => print('Deleted'))
         .catchError((error) => print('Delete failed: $error'));
-    // await db
-    //     .delete()
-    //     .whenComplete(() => print('Note item deleted from the database'))
-    //     .catchError((e) => print(e));
+  
   }
 
   updateEmp(NotesModel note) async {
